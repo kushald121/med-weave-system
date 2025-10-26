@@ -26,16 +26,9 @@ export default function Auth() {
 
   // Redirect when user successfully logs in
   useEffect(() => {
-    if (!user) return;
-    if (hospitalUser) {
-      navigate(`/${hospitalUser.role}`, { replace: true });
-      return;
+    if (user && hospitalUser) {
+      navigate(`/${hospitalUser.role}`);
     }
-    // Fallback: if user is logged in but role not assigned yet, leave the auth page
-    const id = setTimeout(() => {
-      navigate('/', { replace: true });
-    }, 800);
-    return () => clearTimeout(id);
   }, [user, hospitalUser, navigate]);
 
   const handleSignIn = async (e: React.FormEvent) => {
