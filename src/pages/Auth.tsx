@@ -37,7 +37,11 @@ export default function Auth() {
     const { error } = await signIn(signInEmail, signInPassword);
 
     if (error) {
-      toast.error(error.message || 'Failed to sign in');
+      let errorMessage = error.message || 'Failed to sign in';
+      if (error.message === "Invalid login credentials") {
+        errorMessage = "Invalid credentials. If you just signed up, please confirm your email first (check your inbox) or disable 'Confirm email' in Supabase Authentication settings.";
+      }
+      toast.error(errorMessage);
     } else {
       toast.success('Signed in successfully');
       // Navigation will happen automatically via AuthContext
@@ -58,7 +62,9 @@ export default function Auth() {
     if (error) {
       toast.error(error.message || 'Failed to sign up');
     } else {
-      toast.success('Account created! Please check your email to verify.');
+      toast.success('Account created! Check your email to confirm, or disable email confirmation in Supabase for easier testing.', {
+        duration: 6000,
+      });
     }
 
     setLoading(false);
